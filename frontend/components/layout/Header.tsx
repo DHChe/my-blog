@@ -23,6 +23,13 @@ export function Header() {
                                 </Link>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
+                                <Link href="/books" legacyBehavior passHref>
+                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                        독서 노트
+                                    </NavigationMenuLink>
+                                </Link>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
                                 <Link href="/projects" legacyBehavior passHref>
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                         프로젝트
@@ -32,7 +39,7 @@ export function Header() {
                             <NavigationMenuItem>
                                 <Link href="/about" legacyBehavior passHref>
                                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                        About
+                                        소개
                                     </NavigationMenuLink>
                                 </Link>
                             </NavigationMenuItem>

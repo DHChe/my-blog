@@ -11,7 +11,7 @@ from app.api.deps import get_db
 from app.config import settings
 from app.db.base import Base
 from app.main import app
-from app.models import Post, Tag, post_tags  # noqa: F401
+from app.models import Tag, TIL  # noqa: F401
 
 
 # Test database URL (SQLite for testing)
@@ -93,39 +93,6 @@ def invalid_headers() -> dict[str, str]:
 
 
 @pytest.fixture
-async def sample_post(db_session: AsyncSession) -> Post:
-    """Create a sample published post for testing."""
-    from datetime import datetime, timezone
-
-    post = Post(
-        title="Test Post",
-        slug="test-post",
-        content="This is test content.",
-        status="published",
-        published_at=datetime.now(timezone.utc),
-    )
-    db_session.add(post)
-    await db_session.commit()
-    await db_session.refresh(post)
-    return post
-
-
-@pytest.fixture
-async def sample_draft_post(db_session: AsyncSession) -> Post:
-    """Create a sample draft post for testing."""
-    post = Post(
-        title="Draft Post",
-        slug="draft-post",
-        content="This is draft content.",
-        status="draft",
-    )
-    db_session.add(post)
-    await db_session.commit()
-    await db_session.refresh(post)
-    return post
-
-
-@pytest.fixture
 async def sample_tag(db_session: AsyncSession) -> Tag:
     """Create a sample tag for testing."""
     tag = Tag(
@@ -136,3 +103,38 @@ async def sample_tag(db_session: AsyncSession) -> Tag:
     await db_session.commit()
     await db_session.refresh(tag)
     return tag
+
+
+@pytest.fixture
+async def sample_til(db_session: AsyncSession) -> TIL:
+    """Create a sample TIL for testing."""
+    til = TIL(
+        title="Day 1 Learning",
+        slug="day-1-learning",
+        day_number=1,
+        excerpt="Today I learned about Python",
+        content="# Python\n\nPython is great!",
+        is_published=True,
+    )
+    db_session.add(til)
+    await db_session.commit()
+    await db_session.refresh(til)
+    return til
+
+
+@pytest.fixture
+async def sample_til_with_tags(db_session: AsyncSession, sample_tag: Tag) -> TIL:
+    """Create a sample TIL with tags for testing."""
+    til = TIL(
+        title="Day 2 Learning",
+        slug="day-2-learning",
+        day_number=2,
+        excerpt="Today I learned more Python",
+        content="# More Python\n\nAdvanced topics!",
+        is_published=True,
+        tags=[sample_tag],
+    )
+    db_session.add(til)
+    await db_session.commit()
+    await db_session.refresh(til, ["tags"])
+    return til

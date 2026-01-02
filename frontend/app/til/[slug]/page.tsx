@@ -1,64 +1,94 @@
-import { getPostBySlug } from "@/lib/api"
-import { Container } from "@/components/layout/Container"
-import { Badge } from "@/components/ui/badge"
-import { notFound } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft } from "lucide-react"
+import { getPostBySlug } from "@/lib/api";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { MarkdownRenderer } from "@/components/ui/MarkdownRenderer";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 interface PageProps {
     params: Promise<{
-        slug: string
-    }>
+        slug: string;
+    }>;
 }
 
-export default async function PostPage({ params }: PageProps) {
-    const { slug } = await params
-    const post = await getPostBySlug(slug)
+export default async function TILDetailPage({ params }: PageProps) {
+    const { slug } = await params;
+    const post = await getPostBySlug(slug);
 
     if (!post) {
-        notFound()
+        notFound();
     }
 
+    const formattedDate = new Date(
+        post.published_at || post.created_at
+    ).toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
     return (
-        <Container className="py-10">
-            <Link href="/til">
-                <Button variant="ghost" className="mb-8 pl-0 hover:bg-transparent hover:text-primary">
-                    <ChevronLeft className="mr-2 h-4 w-4" />
-                    목록으로 돌아가기
-                </Button>
-            </Link>
+        <div className="w-full min-h-screen px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-24">
+            <div className="mx-auto max-w-5xl">
+                {/* Back Navigation */}
+                <Link
+                    href="/til"
+                    className="group mb-8 inline-flex items-center font-semibold leading-tight text-green hover:underline"
+                >
+                    <ArrowLeft className="mr-1 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                    <span>목록으로</span>
+                </Link>
 
-            <article className="prose prose-zinc mx-auto dark:prose-invert lg:prose-xl">
-                <div className="mb-8 text-center">
-                    <div className="mb-4 flex justify-center gap-2">
-                        {post.tags.map((tag) => (
-                            <Badge key={tag.slug} variant="secondary">
-                                {tag.name}
-                            </Badge>
-                        ))}
-                    </div>
-                    <h1 className="mb-2 text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:text-5xl">
-                        {post.title}
-                    </h1>
-                    <time dateTime={post.published_at || post.created_at} className="text-muted-foreground">
-                        {new Date(post.published_at || post.created_at).toLocaleDateString("ko-KR", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })}
-                    </time>
-                </div>
+                <article className="w-full">
+                    {/* Header */}
+                    <header className="mb-12">
+                        {/* Meta info */}
+                        <div className="mb-4 flex items-center gap-4 text-sm text-slate">
+                            <span className="font-mono text-green">Day {post.day_number}</span>
+                            <span className="text-slate/50">·</span>
+                            <time dateTime={post.published_at || post.created_at}>
+                                {formattedDate}
+                            </time>
+                        </div>
 
-                <div className="mt-8">
-                    {/* 참고: 현재는 텍스트로 표시됩니다. 추후 마크다운 파서를 적용할 예정입니다. */}
-                    <div className="whitespace-pre-wrap font-sans">
-                        {post.content}
-                    </div>
-                </div>
-            </article>
-        </Container>
-    )
+                        {/* Title */}
+                        <h1 className="text-3xl font-bold tracking-tight text-lightest-slate sm:text-4xl lg:text-5xl">
+                            {post.title}
+                        </h1>
+
+                        {/* Tags */}
+                        <ul className="mt-6 flex flex-wrap gap-2" aria-label="태그">
+                            {post.tags.map((tag) => (
+                                <li key={tag.slug}>
+                                    <span className="flex items-center rounded-full bg-green-tint px-3 py-1 text-xs font-medium leading-5 text-green">
+                                        {tag.name}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+
+                        {/* Excerpt */}
+                        <p className="mt-6 text-lg leading-relaxed text-light-slate">
+                            {post.excerpt}
+                        </p>
+                    </header>
+
+                    {/* Content */}
+                    <MarkdownRenderer content={post.content} className="text-slate" />
+
+                    {/* Footer Navigation */}
+                    <footer className="mt-16 pt-8 border-t border-lightest-navy">
+                        <Link
+                            href="/til"
+                            className="group inline-flex items-center font-semibold leading-tight text-green hover:underline"
+                        >
+                            <ArrowLeft className="mr-1 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                            <span>모든 TIL 보기</span>
+                        </Link>
+                    </footer>
+                </article>
+            </div>
+        </div>
+    );
 }

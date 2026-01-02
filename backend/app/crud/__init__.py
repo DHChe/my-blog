@@ -1,15 +1,9 @@
-from app.crud.post import (
-    create_post,
-    delete_post,
-    get_post_by_slug,
-    get_posts,
-    update_post,
-)
+from app.crud import book as book_crud
+from app.crud import tag as tag_crud
+from app.crud import til as til_crud
 
 __all__ = [
-    "create_post",
-    "delete_post",
-    "get_post_by_slug",
-    "get_posts",
-    "update_post",
+    "book_crud",
+    "tag_crud",
+    "til_crud",
 ]

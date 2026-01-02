@@ -1,0 +1,24 @@
+[Unit]
+Description=Blog API Service
+After=network.target postgresql.service
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/blog-api
+Environment="PATH=/home/ubuntu/blog-api/venv/bin"
+EnvironmentFile=/home/ubuntu/blog-api/.env
+ExecStart=/home/ubuntu/blog-api/venv/bin/gunicorn app.main:app \
+    --workers 2 \
+    --worker-class uvicorn.workers.UvicornWorker \
+    --bind unix:/run/blog-api.sock \
+    --access-logfile /var/log/blog-api/access.log \
+    --error-logfile /var/log/blog-api/error.log \
+    --timeout 120 \
+    --keep-alive 5
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+

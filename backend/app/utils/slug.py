@@ -1,7 +1,9 @@
+from typing import Optional
+
 from slugify import slugify
 
 
-def generate_slug(title: str, existing_slugs: list[str] | None = None) -> str:
+def generate_slug(title: str, existing_slugs: Optional[list[str]] = None) -> str:
     """Generate a URL-safe slug from a title.
 
     Args:

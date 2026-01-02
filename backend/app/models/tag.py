@@ -1,42 +1,25 @@
+from __future__ import annotations
+
 import uuid
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Column, DateTime, ForeignKey, String, Table, Uuid
+from sqlalchemy import DateTime, String, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
 if TYPE_CHECKING:
-    from app.models.post import Post
+    from app.models.til import TIL
 
 
 def _utc_now() -> datetime:
     """Return current UTC datetime."""
-    return datetime.now(UTC)
-
-
-# Association table for many-to-many relationship
-post_tags = Table(
-    "post_tags",
-    Base.metadata,
-    Column(
-        "post_id",
-        Uuid,
-        ForeignKey("posts.id", ondelete="CASCADE"),
-        primary_key=True,
-    ),
-    Column(
-        "tag_id",
-        Uuid,
-        ForeignKey("tags.id", ondelete="CASCADE"),
-        primary_key=True,
-    ),
-)
+    return datetime.now(timezone.utc)
 
 
 class Tag(Base):
-    """Tag model for categorizing posts."""
+    """Tag model."""
 
     __tablename__ = "tags"
 
@@ -55,10 +38,9 @@ class Tag(Base):
         default=_utc_now,
     )
 
-    # Relationships
-    posts: Mapped[list["Post"]] = relationship(
-        "Post",
-        secondary="post_tags",
+    # Many-to-many relationship with TIL
+    tils: Mapped[list["TIL"]] = relationship(
+        "TIL",
+        secondary="til_tags",
         back_populates="tags",
-        lazy="selectin",
     )

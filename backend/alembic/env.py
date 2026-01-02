@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.config import settings
 from app.db.base import Base
-from app.models import Post, Tag, post_tags  # noqa: F401
+from app.models import Tag  # noqa: F401
 
 config = context.config
 

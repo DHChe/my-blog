@@ -1,31 +1,32 @@
 import { Container } from "@/components/layout/Container"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+// import {
+//     Card,
+//     CardContent,
+//     CardDescription,
+//     CardFooter,
+//     CardHeader,
+//     CardTitle,
+// } from "@/components/ui/card"
+// import { Badge } from "@/components/ui/badge"
+// import { Button } from "@/components/ui/button"
+// import Link from "next/link"
 
-const projects = [
-    {
-        title: "My Blog",
-        description: "Next.js와 FastAPI로 구축한 개인 기술 블로그입니다. 마크다운 포스팅 작성, 태그 관리 기능을 제공하며 모던한 디자인을 적용했습니다.",
-        tags: ["Next.js", "FastAPI", "PostgreSQL", "Tailwind CSS"],
-        link: "https://github.com/midiummin/my-blog",
-    },
-    {
-        title: "Project Alpha",
-        description: "팀 프로젝트로 진행한 웹 애플리케이션입니다. 실시간 데이터 처리와 대시보드 기능을 중점으로 개발했습니다.",
-        tags: ["React", "Node.js", "Socket.io"],
-        link: "#",
-    },
-    // Add more projects here
-]
+// 벤치마킹 레퍼런스 - 추후 참고용으로 주석 처리
+// const projects = [
+//     {
+//         title: "My Blog",
+//         description: "Next.js와 FastAPI로 구축한 개인 기술 블로그입니다. 마크다운 포스팅 작성, 태그 관리 기능을 제공하며 모던한 디자인을 적용했습니다.",
+//         tags: ["Next.js", "FastAPI", "PostgreSQL", "Tailwind CSS"],
+//         link: "https://github.com/midiummin/my-blog",
+//     },
+//     {
+//         title: "Project Alpha",
+//         description: "팀 프로젝트로 진행한 웹 애플리케이션입니다. 실시간 데이터 처리와 대시보드 기능을 중점으로 개발했습니다.",
+//         tags: ["React", "Node.js", "Socket.io"],
+//         link: "#",
+//     },
+//     // Add more projects here
+// ]
 
 export default function ProjectsPage() {
     return (
@@ -41,6 +42,17 @@ export default function ProjectsPage() {
                 </div>
             </div>
             <hr className="my-8" />
+            <div className="flex flex-col items-center justify-center py-20">
+                <div className="text-center space-y-4">
+                    <p className="text-2xl font-semibold text-muted-foreground">
+                        준비중입니다
+                    </p>
+                    <p className="text-muted-foreground">
+                        부트캠프 진행 중 진행하게 되는 프로젝트들이 정리될 예정입니다.
+                    </p>
+                </div>
+            </div>
+            {/* 벤치마킹 레퍼런스 - 추후 참고용으로 주석 처리
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {projects.map((project, index) => (
                     <Card key={index} className="flex flex-col overflow-hidden">
@@ -67,6 +79,7 @@ export default function ProjectsPage() {
                     </Card>
                 ))}
             </div>
+            */}
         </Container>
     )
 }

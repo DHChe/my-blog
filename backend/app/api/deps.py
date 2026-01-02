@@ -1,5 +1,5 @@
 from collections.abc import AsyncGenerator
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,7 +20,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def get_current_admin(
-    x_api_key: Annotated[str | None, Header()] = None,
+    x_api_key: Annotated[Optional[str], Header()] = None,
 ) -> bool:
     """Verify admin API key for protected endpoints."""
     if x_api_key is None or x_api_key != settings.ADMIN_API_KEY:
